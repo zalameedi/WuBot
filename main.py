@@ -1,8 +1,19 @@
 import os
+import picamera
+import subprocess
+import time
 
 
 def main():
-    print("Hello World!")
+
+    cam = picamera.PiCamera()
+    cam.vflip=True
+    cam.start_preview()
+    time.sleep(5)
+    cam.stop_preview()
+    exit()
+
+
 
 
 if __name__ == '__main__':
