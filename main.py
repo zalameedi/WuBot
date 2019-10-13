@@ -4,12 +4,8 @@ import subprocess
 import time
 import RPi.GPIO as GP
 
-<<<<<<< HEAD
-def cam_on():
-=======
 
-def main():
->>>>>>> 81e11263c30c05aab32f2a34413ced7419706236
+def cam():
     cam = picamera.PiCamera()
     cam.vflip = True
     cam.start_preview()
@@ -29,7 +25,6 @@ def flash_lights():
     except:
         GP.cleanup()
 
-<<<<<<< HEAD
 def distance_sensor():
     GP.setmode(GP.BCM)
     TRIG = 4
@@ -56,7 +51,5 @@ def main():
     distance_sensor()
 
 
-=======
->>>>>>> 81e11263c30c05aab32f2a34413ced7419706236
 if __name__ == '__main__':
     main()
