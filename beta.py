@@ -9,10 +9,8 @@ GP.setmode(GP.BCM)
 class Pi:
     def __init__(self):
         GP.setup(21, GP.OUT)
-        self.GND = 18
-        self.PWR = 4
-        GP.setup(self.PWR, GP.OUT) # Power pin set
-        GP.setup(self.GND, GP.IN) # Ground pin set
+        GP.setup(4, GP.OUT) # Power pin set
+        GP.setup(18, GP.IN) # Ground pin set
         GP.setup(4, GP.OUT)
         GP.setup(18, GP.IN)
 
