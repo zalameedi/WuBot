@@ -1,3 +1,7 @@
+"""
+WuBot can now turn on LED lights based on a distance sensor!
+"""
+
 import RPi.GPIO as GPIO
 import time
 
