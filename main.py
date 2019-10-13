@@ -4,12 +4,17 @@ import subprocess
 import time
 import RPi.GPIO as GP
 
+GP.setmode(GP.BCM)
 
 class Pi:
     def __init__(self):
-        GP.setmode(GP.BCM)
+        GP.setup(21, GP.OUT)
         self.GND = 18
         self.PWR = 4
+        GP.setup(self.PWR, GP.OUT) # Power pin set
+        GP.setup(self.GND, GP.IN) # Ground pin set
+        GP.setup(4, GP.OUT)
+        GP.setup(18, GP.IN)
 
 
     def pi_cam(self):
@@ -20,7 +25,26 @@ class Pi:
         cam.stop_preview()
         exit()
 
-    def flash_lights(self):
+    def flash_red(self):
+        GP.setmode(GP.BCM)
+        GP.setup(18, GP.OUT)
+        try:
+            while True:
+                GP.output(18, GP.HIGH)
+                time.sleep(1)
+                GP.output(18, GP.LOW)
+                time.sleep(1)
+        except:
+            GP.cleanup()
+
+    def flash_blue(self):
+        GP.output(21, GP.HIGH)
+        time.sleep(3)
+        GP.output(21, GP.LOW)
+        time.sleep(3)
+
+
+    def flash_green(self):
         GP.setmode(GP.BCM)
         GP.setup(18, GP.OUT)
         try:
@@ -37,8 +61,6 @@ class Pi:
         TRIG = 4
         ECHO = 18
         while True:
-            GP.setup(TRIG, GP.OUT)
-            GP.setup(ECHO, GP.IN)
             GP.output(TRIG, True)
             time.sleep(0.00001)
             GP.output(TRIG, False)
@@ -50,14 +72,17 @@ class Pi:
                 sig_time = end-start
                 distance = sig_time / 0.000058
                 print('Distance: {} centimeters'.format(distance))
+                if distance > 2000:
+                    GP.output(21, GP.HIGH)
+                    time.sleep(1)
+                    GP.output(21, GP.LOW)
+                    time.sleep(1)
             except:
                 GP.cleanup()
 
 
     def light_motion_sensor(self):
         while True:
-            GP.setup(self.PWR, GP.OUT) # Power pin set
-            GP.setup(self.GND, GP.IN) # Ground pin set
             GP.output(self.PWR, True) # Pin is turned on
             time.sleep(0.0001) # System waits for 1 ms
             GP.output(self.PWR, False) # Turned pin off
@@ -69,14 +94,16 @@ class Pi:
                 sig_time = end-start
                 distance = sig_time / 0.000058
                 print("Distance: {0} cm".format(distance))
-                # PUT CONDITIONS here
+                if distance > 20:
+                   flash_blue()
             except:
-                GP.cleanup() 
+                GP.cleanup()
 
 
 
 
 def main():
+    GP.cleanup()
     test_pi = Pi()
     test_pi.distance_sensor()
 
